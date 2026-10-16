@@ -1,0 +1,16 @@
+{
+  "CertFolderPath": "C:\\My Certificates and CRLs 13",
+  "Proxy_useProxy": "false",
+  "Proxy_anonymous": "false",
+  "Proxy_address": "",
+  "Proxy_port": "",
+  "Proxy_user": "",
+  "Proxy_pass": "",
+  "Proxy_savepass": "false",
+  "OCSP_address": "",
+  "TSP_address": "",
+  "CMP_useCMP": "false",
+  "CMP_address": "",
+  "CMP_port": "",
+  "IsOfflineMode": "false"
+}

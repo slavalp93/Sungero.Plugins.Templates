@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<ProductVersion>8.0.30703</ProductVersion>
+		<RootNamespace>ServerCryptographyPlugin</RootNamespace>
+		<AssemblyName>LitikoServerCryptographyPlugin</AssemblyName>
+		<CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<OutputPath>bin\$(Configuration)</OutputPath>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+	<Import Project="ServerPlugin.targets" />
+	<ItemGroup>
+		<PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" />
+		<PackageReference Include="IIT.EUSignCP" Version="1.3.1.7">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="4.7.0" />
+		<PackageReference Include="Sungero.Plugins.Sdk" Version="1.4.1" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<!-- Копирование библиотек IIT в выходной каталог -->
+		<None Update="Libs\IIT\*.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>%(Filename)%(Extension)</TargetPath>
+		</None>
+	</ItemGroup>
+</Project>

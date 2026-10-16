@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="ClientPlugin.props"/>
+	<PropertyGroup>
+		<ProductVersion>8.0.30703</ProductVersion>
+		<RootNamespace>ClientCryptographyPlugin</RootNamespace>
+		<AssemblyName>LitikoClientCryptographyPlugin</AssemblyName>
+		<CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<OutputPath>bin\$(Configuration)\plugins\cryptography_plugin\$(AssemblyName)\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+		<AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
+	</PropertyGroup>
+	<!-- Сборка для Windows -->
+	<PropertyGroup Condition="'$(BuildLinuxPlugin)' != 'true' And '$(BuildMacOsPlugin)' != 'true'">
+		<TargetFramework>net461</TargetFramework>
+	</PropertyGroup>
+	<!-- Сборка для Linux и macOS -->
+	<PropertyGroup Condition="'$(BuildLinuxPlugin)' == 'true' Or '$(BuildMacOsPlugin)' == 'true'">
+		<TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="BouncyCastle" Version="1.8.9"/>
+		<PackageReference Include="IIT.EUSignCP" Version="1.3.1.7">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0"/>
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Libs\IIT\"/>
+	</ItemGroup>
+	<Import Project="ClientPlugin.targets"/>
+	<ItemGroup>
+		<!-- Копирование библиотек IIT в выходной каталог -->
+		<None Update="Libs\IIT\*.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>%(Filename)%(Extension)</TargetPath>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Settings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>
