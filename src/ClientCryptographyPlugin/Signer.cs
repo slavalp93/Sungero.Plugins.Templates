@@ -29,6 +29,18 @@ namespace Library
         /// </summary>
         public static string certificateParameters = string.Empty;
 
+        [System.Runtime.InteropServices.DllImport(
+            "user32.dll",
+            EntryPoint = "MessageBoxW",
+            CharSet = System.Runtime.InteropServices.CharSet.Unicode,
+            ExactSpelling = true,
+            SetLastError = true)]
+        private static extern int ShowNativeMessageBox(
+            IntPtr hWnd,
+            string text,
+            string caption,
+            uint type);
+
         public static void SetCertificateParameters(string parameters)
         {
             lock (SyncRoot)
@@ -44,7 +56,7 @@ namespace Library
         {
             result = null;
             Logger.Info($"IIT: начало подписания. Plugin={pluginName}, CertificateThumbprint={certificateThumbprint}.");
-            
+
             try
             {
                 if (string.IsNullOrWhiteSpace(certificateThumbprint))
@@ -65,15 +77,7 @@ namespace Library
                 {
                     var language = GetIitLanguage(userLanguage);
                     InitializeIit(language);
-                    var selectedThumbprint = EnsurePrivateKeyLoaded(language);
-
-                    if (!ThumbprintsEqual(selectedThumbprint, certificateThumbprint))
-                    {
-                        ResetPrivateKey();
-                        throw new SigningException(SignDataResult.IllegalCertificateID,
-                            "Выбранный ключ IIT не соответствует сертификату, указанному в Directum RX. " +
-                            $"Сертификат ключа: {selectedThumbprint}; сертификат Directum: {certificateThumbprint}.");
-                    }
+                    EnsurePrivateKeyMatchesCertificate(language, certificateThumbprint, userLanguage);
 
                     ApplyProxySettings(activeSettings);
 
@@ -174,6 +178,83 @@ namespace Library
             iitConfigured = true;
             Logger.Info("IIT: инициализация настроек завершена. " +
                 $"Режим offline={settings.IsOfflineMode}, Proxy={settings.UseProxy}.");
+        }
+
+        /// <summary>Запросить ключ, соответствующий сертификату, выбранному в Directum RX.</summary>
+        private static void EnsurePrivateKeyMatchesCertificate(IEUSignCP.EU_LANG language, string expectedThumbprint, string userLanguage)
+        {
+            const uint MB_OK = 0x00000000;
+            const uint MB_ICONWARNING = 0x00000030;
+            const uint MB_SETFOREGROUND = 0x00010000;
+            const uint MB_TOPMOST = 0x00040000;
+
+            while (true)
+            {
+                var selectedThumbprint = EnsurePrivateKeyLoaded(language);
+
+                if (ThumbprintsEqual(selectedThumbprint, expectedThumbprint))
+                    return;
+
+                ResetPrivateKey();
+
+                string message;
+                string caption;
+                string dialogError;
+                GetCertificateMismatchTexts(userLanguage, out message, out caption, out dialogError);
+
+                var dialogResult = ShowNativeMessageBox(
+                    IntPtr.Zero,
+                    message,
+                    caption,
+                    MB_OK | MB_ICONWARNING | MB_SETFOREGROUND | MB_TOPMOST);
+
+                if (dialogResult == 0)
+                    throw new System.ComponentModel.Win32Exception(
+                        System.Runtime.InteropServices.Marshal.GetLastWin32Error(),
+                        dialogError);
+            }
+        }
+
+        private static void GetCertificateMismatchTexts(string userLanguage, out string message, out string caption, out string dialogError)
+        {
+            var language = (userLanguage ?? string.Empty)
+                .Trim()
+                .Replace('_', '-')
+                .Split('-')[0]
+                .ToLowerInvariant();
+
+            switch (language)
+            {
+                case "ru":
+                    message =
+                        "Сертификат ключа не соответствует сертификату, " +
+                        "выбранному в Directum RX.\r\n\r\n" +
+                        "В следующем окне выберите другой ключ.\r\n" +
+                        "Чтобы прекратить подписание, отмените выбор ключа.";
+                    caption = "Подписание Directum RX";
+                    dialogError = "Не удалось показать предупреждение о несовпадении сертификатов.";
+                    break;
+
+                case "uk":
+                    message =
+                        "Сертифікат ключа не відповідає сертифікату, " +
+                        "обраному в Directum RX.\r\n\r\n" +
+                        "У наступному вікні виберіть інший ключ.\r\n" +
+                        "Щоб припинити підписання, скасуйте вибір ключа.";
+                    caption = "Підписання Directum RX";
+                    dialogError = "Не вдалося показати попередження про невідповідність сертифікатів.";
+                    break;
+
+                default:
+                    message =
+                        "The certificate of the selected key does not match the certificate " +
+                        "selected in Directum RX.\r\n\r\n" +
+                        "Select a different key in the next window.\r\n" +
+                        "To stop signing, cancel key selection.";
+                    caption = "Directum RX signing";
+                    dialogError = "Unable to display the certificate mismatch warning.";
+                    break;
+            }
         }
 
         /// <summary>Запросить ключ через диалог IIT или использовать ранее выбранный.</summary>
