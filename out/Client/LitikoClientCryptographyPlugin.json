@@ -1,0 +1,9 @@
+[{
+  "name": "LitikoClientCryptographyPlugin",
+  "platform": "win32",
+  "file": "plugins/LitikoClientCryptographyPlugin_win.zip",
+  "preloaded": false,
+  "version": "4.9",
+  "guid": "BDF8266B-FD5E-4FE6-9F3E-AD67F360C053",
+  "dependencies": ["cryptographyplugin"]
+}]

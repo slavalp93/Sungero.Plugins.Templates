@@ -1,0 +1,16 @@
+{
+	"CertFolderPath": "C:\\My Certificates and CRLs 13",
+	"Proxy_useProxy": false,
+	"IsOfflineMode": false,
+	"Proxy_anonymous": true,
+	"Proxy_address": "clientproxy.basf.net",
+	"Proxy_port": 8080,
+	"Proxy_user": "",
+	"Proxy_pass": "",
+	"Proxy_savepass": false,
+	"OCSP_address": "",
+	"TSP_address": "",
+	"CMP_useCMP": true,
+	"CMP_address": "",
+	"CMP_port": 80
+}

@@ -1,0 +1,105 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <RootNamespace>LitikoServerCryptographyPlugin</RootNamespace>
+    <AssemblyName>LitikoServerCryptographyPlugin</AssemblyName>
+    <TargetFramework>net45</TargetFramework>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <Import Project="ServerPlugin.targets" />
+  <ItemGroup>
+    <None Remove="CAConnectors.dll" />
+    <None Remove="CAGUI.dll" />
+    <None Remove="CSPBase.dll" />
+    <None Remove="CSPExtension.dll" />
+    <None Remove="CSPIBase.dll" />
+    <None Remove="EUSignCP.dll" />
+    <None Remove="KM.dll" />
+    <None Remove="KM.EKeyAlmaz1C.dll" />
+    <None Remove="KM.EKeyCrystal1.dll" />
+    <None Remove="KM.FileSystem.dll" />
+    <None Remove="KM.NCMGryada301.dll" />
+    <None Remove="KM.PKCS11.dll" />
+    <None Remove="KM.TCTEllipseSCard.dll" />
+    <None Remove="LDAPClient.dll" />
+    <None Remove="NCHostCP.dll" />
+    <None Remove="NCMGryada301.dll" />
+    <None Remove="PKCS11.EKeyAlmaz1C.dll" />
+    <None Remove="PKCS11.EKeyCrystal1.dll" />
+    <None Remove="PKCS11.NCMGryada301.dll" />
+    <None Remove="PKIFormats.dll" />
+    <None Remove="RF.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CAConnectors.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CAGUI.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CSPBase.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CSPExtension.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CSPIBase.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EUSignCP.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="KM.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="KM.EKeyAlmaz1C.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="KM.EKeyCrystal1.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="KM.FileSystem.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="KM.NCMGryada301.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="KM.PKCS11.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="KM.TCTEllipseSCard.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LDAPClient.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NCHostCP.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NCMGryada301.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PKCS11.EKeyAlmaz1C.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PKCS11.EKeyCrystal1.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PKCS11.NCMGryada301.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PKIFormats.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RF.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.Crypto.dll" Version="1.8.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+</Project>
